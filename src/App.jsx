@@ -1,32 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import react, { useEffect, useState } from 'react'
 import './App.css'
+import Sidebar from './components/Sidebar'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [color, setColor] = useState("")
+  const [answers, setAnswers] = useState([])
+
+  const getRandomColor = () => {
+    const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',]
+    const color = new Array(6).fill('').map(() => digits[Math.floor(Math.random() * digits.length)]).join("")
+    return `#${color}`
+  }
+
+
+  useEffect(() => {
+    const actualColor = getRandomColor()
+    setColor(actualColor);
+    console.log(actualColor);
+    setAnswers([actualColor, getRandomColor(), getRandomColor()].sort(() => 0.5 - Math.random()))
+  }, [])
 
   return (
     <div className="App">
+      {/* <Sidebar></Sidebar> */}
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <label htmlFor="">Your Name: </label>
+        <input type="text" style={{ padding: '5px', width: '300px', height: '30px', marginBottom: '10px' }} />
+        <hr />
+        <h2>Guess the color</h2>
+        <div className='color_div' style={{ background: color }}></div>
+        {
+          answers.map(answer => (
+            <button style={{ marginRight: "5px" }} key={answer}>{answer}</button>
+          ))
+        }
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }
