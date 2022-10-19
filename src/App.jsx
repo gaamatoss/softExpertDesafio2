@@ -23,18 +23,20 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Sidebar></Sidebar> */}
-      <div>
+      <Sidebar />
+      <div className='color__game'>
         <label htmlFor="">Your Name: </label>
-        <input type="text" style={{ padding: '5px', width: '300px', height: '30px', marginBottom: '10px' }} />
+        <input type="text" style={{ padding: '5px', width: '300px', height: '30px', marginBottom: '5px', borderRadius: '10px', fontSize: '1.2rem' }} />
         <hr />
         <h2>Guess the color</h2>
         <div className='color_div' style={{ background: color }}></div>
-        {
-          answers.map(answer => (
-            <button style={{ marginRight: "5px" }} key={answer}>{answer}</button>
-          ))
-        }
+        <div>
+          {
+            answers.map(answer => (
+              <button style={{ marginRight: "5px" }} key={answer}>{answer}</button>
+            ))
+          }
+        </div>
       </div>
     </div>
   )
