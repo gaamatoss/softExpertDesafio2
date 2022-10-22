@@ -22,3 +22,28 @@ flex-direction: row;
   align-items: center;
   justify-self: center;
 }
+
+.color__selected {
+  width: 100px;
+  height: 40px;
+  margin-right: 5px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #303030;
+}
+
+.color__selected:hover {
+  background-color: aliceblue;
+}
+
+.progress{
+  display:block;
+}
+
+progress::-webkit-progress-bar {
+  background: rgb(255, 255, 255);
+}
+
+progress::-webkit-progress-value {
+  background:#999;
+}
