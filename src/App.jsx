@@ -12,34 +12,23 @@ function App() {
 
   const [color, setColor] = useState("")
   const [answers, setAnswers] = useState([])
+  const [clickedAnswer, setClickedAnswer] = useState([])
   const [isWrong, setIsWrong] = useState(false)
-
-  const [progress, setProgress] = useState(30);
   const [start, setStart] = useState(false)
 
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (progress === 0) {
-        setProgress(0)
-        console.log('terminou');
-        console.log(progress);
-      } else {
-        setProgress(progress - 1)
-        console.log(progress);
-      }
-    }, 1000)
-  }, [progress])
 
   const handleAnswerClicked = (e, answer) => {
     if (answer === color) {
       setIsWrong(true)
-      console.log("Voce acertou: ", e.target.textContent);
+      console.log("Voce acertou + 5 Pts");
+      setClickedAnswer(e.target.textContent)
       generateColor()
     } else {
       setIsWrong(false)
       generateColor()
-      console.log("Voce errou: ", e.target.textContent, "a certa era: ", color);
+      console.log("Voce errou - 1 Pt");
+      setClickedAnswer(e.target.textContent)
     }
   }
 
@@ -55,24 +44,27 @@ function App() {
 
   return (
     <div className="App">
-      <Sidebar />
+      <Sidebar answers={clickedAnswer} color={color} />
       <div className='color__game'>
         {/* <label htmlFor="">Your Name: </label>
         <input type="text" style={{ padding: '5px', width: '300px', height: '30px', marginBottom: '5px', borderRadius: '10px', fontSize: '1.2rem' }} /> */}
         <hr />
         <h2>Guess the color</h2>
-        <progress value={progress} max="30" min="0" style={{ width: '400px', height: '10px', borderRadius: '0px', color: '#fff' }} />
+        {/* <progress value={progress} max="30" min="0" style={{ width: '400px', height: '10px', borderRadius: '0px', color: '#fff' }} /> */}
         <div className='color_div' style={{ background: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <button style={{ width: '150px', height: '40px', color: 'white', background: '#292929', border: 'none', cursor: 'pointer' }}>Start</button>
+          {
+            !start ? <button onClick={() => setStart(true)} style={{ width: '150px', height: '40px', color: 'white', background: '#292929', border: 'none', cursor: 'pointer' }}>Start</button> : ''
+          }
         </div>
         <div>
           {
-            answers.map(answer => (
+            start ? answers.map(answer => (
               <button
                 onClick={(e) => handleAnswerClicked(e, answer)}
                 className='color__selected'
                 key={answer}>{answer}</button>
-            ))
+            )) : ''
+
           }
         </div>
       </div>

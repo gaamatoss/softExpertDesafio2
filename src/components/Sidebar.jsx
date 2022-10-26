@@ -24,14 +24,17 @@ const SideCardCorrect = () => {
     )
 }
 
-export default function Sidebar() {
+export default function Sidebar(props) {
     return (
-        <div className='sidebar' style={{ textAlign: 'center' }}>
+        <div className='sidebar'>
             <h2>Current/Latest game</h2>
-            <hr />
+            <hr style={{ width: '300px' }} />
             <span >Guessed Color | Correct Color | Score</span>
-            <SideCardWrong />
-            <SideCardCorrect />
+            <div className='sideAnswers'>
+                {/* <SideCardWrong />
+                <SideCardCorrect /> */}
+                <p>{props.answers} : {props.color}</p>
+            </div>
         </div>
     )
 }
