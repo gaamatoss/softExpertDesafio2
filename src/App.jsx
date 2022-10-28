@@ -10,44 +10,61 @@ const getRandomColor = () => {
 
 function App() {
 
-  const [color, setColor] = useState("")
-  const [answers, setAnswers] = useState([])
+  const [color, setColor] = useState('')
+  const [generatedAnswers, setGeneratedAnswers] = useState([])
   const [clickedAnswer, setClickedAnswer] = useState([])
+  const [correctAnswer, setCorrectAnswer] = useState([])
   const [isWrong, setIsWrong] = useState(false)
   const [start, setStart] = useState(false)
+  const [answers, setAnswers] = useState([])
 
+
+  const valores = {
+    clickedAnswer,
+    correctAnswer
+  }
+
+  const testeAnswer = () => {
+    setAnswers(valores)
+    console.log("respostas", answers);
+  }
 
 
   const handleAnswerClicked = (e, answer) => {
+    const clickedValue = e.target.textContent
     if (answer === color) {
       setIsWrong(true)
-      console.log("Voce acertou + 5 Pts");
-      setClickedAnswer(e.target.textContent)
       generateColor()
+      setClickedAnswer(clickedValue)
+      setCorrectAnswer(color)
     } else {
       setIsWrong(false)
       generateColor()
-      console.log("Voce errou - 1 Pt");
-      setClickedAnswer(e.target.textContent)
+      setClickedAnswer(clickedValue)
+      setCorrectAnswer(color)
     }
   }
 
   const generateColor = () => {
     const actualColor = getRandomColor()
     setColor(actualColor);
-    setAnswers([actualColor, getRandomColor(), getRandomColor()].sort(() => 0.5 - Math.random()))
+    setGeneratedAnswers([actualColor, getRandomColor(), getRandomColor()].sort(() => 0.5 - Math.random()))
   }
 
   useEffect(() => {
     generateColor()
-  }, [])
+  }, [start])
+
+  // useEffect(() => {
+  //   console.log(generatedAnswers, clickedAnswer, correctAnswer);
+
+  // }, [])
+
 
   return (
     <div className="App">
-      <Sidebar answers={clickedAnswer} color={color} />
+      <Sidebar answers={clickedAnswer} color={correctAnswer} />
       <div className='color__game'>
-        {/* <label htmlFor="">Your Name: </label>
-        <input type="text" style={{ padding: '5px', width: '300px', height: '30px', marginBottom: '5px', borderRadius: '10px', fontSize: '1.2rem' }} /> */}
         <hr />
         <h2>Guess the color</h2>
         {/* <progress value={progress} max="30" min="0" style={{ width: '400px', height: '10px', borderRadius: '0px', color: '#fff' }} /> */}
@@ -58,7 +75,7 @@ function App() {
         </div>
         <div>
           {
-            start ? answers.map(answer => (
+            start ? generatedAnswers.map(answer => (
               <button
                 onClick={(e) => handleAnswerClicked(e, answer)}
                 className='color__selected'
