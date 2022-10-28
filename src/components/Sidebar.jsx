@@ -25,6 +25,7 @@ const SideCardCorrect = (props) => {
 }
 
 export default function Sidebar(props) {
+
     return (
         <div className='sidebar'>
             <h2>Current/Latest game</h2>

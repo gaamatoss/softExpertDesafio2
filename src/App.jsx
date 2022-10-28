@@ -30,6 +30,18 @@ function App() {
   }
 
 
+  const answerArray = []
+  const answerObj = {}
+
+  answerObj.answer = clickedAnswer
+  answerObj.color = correctAnswer
+
+  answerArray.push(answerObj)
+  localStorage.setItem('answer', JSON.stringify(answerArray))
+
+  JSON.parse(localStorage.getItem('answer'))
+
+
   const handleAnswerClicked = (e, answer) => {
     const clickedValue = e.target.textContent
     if (answer === color) {
@@ -85,7 +97,8 @@ function App() {
           }
         </div>
       </div>
-      <a style={{ position: 'fixed', bottom: '40px', right: '40px', cursor: 'pointer' }}>Reset all data</a>
+      <a style={{ position: 'fixed', bottom: '40px', right: '40px', cursor: 'pointer' }}
+        onClick={localStorage.clear()}>Reset all data</a>
     </div>
   )
 }
