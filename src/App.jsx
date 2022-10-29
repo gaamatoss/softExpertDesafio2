@@ -8,52 +8,34 @@ const getRandomColor = () => {
   return `#${color}`
 }
 
-function App() {
+let answerArray = []
+let id = 0
+const saveColor = (clickedColor, correctColor) => {
+  let answerObject = {
+    'id': id + 1,
+    'answer': clickedColor,
+    'color': correctColor
+  }
+  answerArray.unshift(answerObject)
+  id++
+}
+
+
+export default function App() {
 
   const [color, setColor] = useState('')
   const [generatedAnswers, setGeneratedAnswers] = useState([])
-  const [clickedAnswer, setClickedAnswer] = useState([])
-  const [correctAnswer, setCorrectAnswer] = useState([])
   const [isWrong, setIsWrong] = useState(false)
   const [start, setStart] = useState(false)
-  const [answers, setAnswers] = useState([])
-
-
-  const valores = {
-    clickedAnswer,
-    correctAnswer
-  }
-
-  const testeAnswer = () => {
-    setAnswers(valores)
-    console.log("respostas", answers);
-  }
-
-
-  const answerArray = []
-  const answerObj = {}
-
-  answerObj.answer = clickedAnswer
-  answerObj.color = correctAnswer
-
-  answerArray.push(answerObj)
-  localStorage.setItem('answer', JSON.stringify(answerArray))
-
-  JSON.parse(localStorage.getItem('answer'))
-
 
   const handleAnswerClicked = (e, answer) => {
     const clickedValue = e.target.textContent
-    if (answer === color) {
+    saveColor(clickedValue, color)
+    generateColor()
+    if (answer !== color) {
       setIsWrong(true)
-      generateColor()
-      setClickedAnswer(clickedValue)
-      setCorrectAnswer(color)
     } else {
       setIsWrong(false)
-      generateColor()
-      setClickedAnswer(clickedValue)
-      setCorrectAnswer(color)
     }
   }
 
@@ -67,19 +49,12 @@ function App() {
     generateColor()
   }, [start])
 
-  // useEffect(() => {
-  //   console.log(generatedAnswers, clickedAnswer, correctAnswer);
-
-  // }, [])
-
-
   return (
     <div className="App">
-      <Sidebar answers={clickedAnswer} color={correctAnswer} />
+      <Sidebar answers={answerArray} />
       <div className='color__game'>
         <hr />
         <h2>Guess the color</h2>
-        {/* <progress value={progress} max="30" min="0" style={{ width: '400px', height: '10px', borderRadius: '0px', color: '#fff' }} /> */}
         <div className='color_div' style={{ background: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {
             !start ? <button onClick={() => setStart(true)} style={{ width: '150px', height: '40px', color: 'white', background: '#292929', border: 'none', cursor: 'pointer' }}>Start</button> : ''
@@ -97,10 +72,7 @@ function App() {
           }
         </div>
       </div>
-      <a style={{ position: 'fixed', bottom: '40px', right: '40px', cursor: 'pointer' }}
-        onClick={localStorage.clear()}>Reset all data</a>
+
     </div>
   )
 }
-
-export default App

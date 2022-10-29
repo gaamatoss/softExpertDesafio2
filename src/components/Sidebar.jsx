@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './sidebar.css'
 import wrong from '../assets/wrong.png'
 import correct from '../assets/check.png'
@@ -24,18 +24,25 @@ const SideCardCorrect = (props) => {
     )
 }
 
-export default function Sidebar(props) {
+export default function Sidebar({ answers }) {
 
+    localStorage.setItem('colorData', JSON.stringify(answers))
+    const answersConverted = JSON.parse(localStorage.getItem('colorData'))
     return (
         <div className='sidebar'>
             <h2>Current/Latest game</h2>
-            <hr style={{ width: '300px' }} />
+            <hr style={{ width: '70%' }} />
             <span >Guessed Color | Correct Color | Score</span>
-            <div className='sideAnswers'>
+            <div className='sidebarAnswers'>
                 {
-                    props.answers === props.color ? <SideCardCorrect color={props.color} /> : <SideCardWrong answers={props.answers} color={props.color} />
+                    answersConverted.map(item => (
+                        item.answer == item.color ? <SideCardCorrect color={item.color} /> : <SideCardWrong answers={item.answer} color={item.color} />
+                    ))
                 }
             </div>
+            <button style={{ position: 'fixed', bottom: '40px', right: '40px', cursor: 'pointer' }}
+                onClick={() => localStorage.clear()}
+            >Reset all data</button>
         </div>
     )
 }
